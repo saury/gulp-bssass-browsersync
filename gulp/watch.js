@@ -16,7 +16,7 @@ function isOnlyChange(event) {
 
 gulp.task('watch', ['inject', 'temp-img'], function () {
 
-  gulp.watch([path.join(conf.paths.src, '/*.html')], ['inject']);
+  gulp.watch([path.join(conf.paths.src, '/html/*.html')], ['inject']);
 
   gulp.watch([
     path.join(conf.paths.src, '/scss/*.css'),
@@ -39,8 +39,12 @@ gulp.task('watch', ['inject', 'temp-img'], function () {
     }
   });
 
-  gulp.watch(path.join(conf.paths.src, '/*.html'), function(event) {
-    browserSync.reload(event.path);
+  gulp.watch(path.join(conf.paths.src, '/html/*.html'), function(event) {
+    if(isOnlyChange(event)) {
+      gulp.start('htmlInclude');
+    } else {
+      gulp.start('inject');
+    }
   });
 });
 
@@ -51,7 +55,7 @@ gulp.task('temp-img', function () {
 
   return gulp.src([
     path.join(conf.paths.src, '/**/*'),
-    path.join('!' + conf.paths.src, '/**/*.{html,css,js,scss}')
+    path.join('!' + conf.paths.src, '/**/*.{html,css,js,scss,inc}')
   ])
     .pipe(fileFilter)
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/')));

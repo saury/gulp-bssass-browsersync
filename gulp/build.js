@@ -10,12 +10,12 @@ var $ = require('gulp-load-plugins')({
 
 gulp.task('html', ['inject'], function () {
 
-  var htmlFilter = $.filter('*.html', { restore: true });
+  var htmlFilter = $.filter('**/*.html', { restore: true });
   var jsFilter = $.filter('**/*.js', { restore: true });
   var cssFilter = $.filter('**/*.css', { restore: true });
   var assets;
 
-  return gulp.src(path.join(conf.paths.tmp, '/serve/*.html'))
+  return gulp.src(path.join(conf.paths.tmp, '/serve/html/*.html'))
     .pipe(assets = $.useref.assets())
     .pipe($.rev())
     .pipe(jsFilter)
@@ -51,7 +51,7 @@ gulp.task('other', function () {
 
   return gulp.src([
     path.join(conf.paths.src, '/**/*'),
-    path.join('!' + conf.paths.src, '/**/*.{html,css,js,scss}')
+    path.join('!' + conf.paths.src, '/**/*.{html,css,js,scss,inc}')
   ])
     .pipe(fileFilter)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));

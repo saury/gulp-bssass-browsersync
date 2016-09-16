@@ -8,7 +8,7 @@ var $ = require('gulp-load-plugins')();
 
 var _ = require('lodash');
 
-gulp.task('inject', ['scripts', 'styles'], function () {
+gulp.task('inject', ['htmlInclude' ,'scripts', 'styles'], function () {
   var injectStyles = gulp.src([
     path.join(conf.paths.tmp, '/serve/styles/*.css'),
     path.join(conf.paths.tmp, '/serve/libs/*.js'),
@@ -19,10 +19,10 @@ gulp.task('inject', ['scripts', 'styles'], function () {
 
   var injectOptions = {
     ignorePath: [conf.paths.src, path.join(conf.paths.tmp, '/serve')],
-    addRootSlash: false
+    addRootSlash: true
   };
 
-  return gulp.src(path.join(conf.paths.src, '/*.html'))
+  return gulp.src(path.join(conf.paths.tmp, '/serve/html/*.html'))
     .pipe($.inject(injectStyles, injectOptions))
-    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/html/')));
 });
